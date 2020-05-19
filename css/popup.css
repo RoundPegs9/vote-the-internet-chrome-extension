@@ -58,3 +58,7 @@ body {
     margin-top: -10px;
     margin-left: -38% !important;
   }
+  #displayResults
+  {
+    display: none;
+  }

@@ -68,12 +68,12 @@ class Vote {
                     {
                         document.getElementById("hostUpvotes").innerText = data.data.host.upvotes;
                         document.getElementById("upvoteCount").innerText = data.data.path.upvotes;
-
                         this.session_data.push({"url" : data.data.path.url, "voteType" : 1});
                         
-                        chrome.storage.sync.set({'vti_session': this.session_data}, ()=>{
-                            console.log(this.session_data, "UPvote successful");
+                        chrome.storage.sync.set({'vti_sessions': this.session_data}, ()=>{
+                            //alert user
                             this.voteType = 1;
+                            this.refurbishContent();
 
                         }); //upvote = 1;
                     }
@@ -103,9 +103,9 @@ class Vote {
                         this.session_data.push({"url" : data.data.path.url, "voteType" : 0});
 
                         chrome.storage.sync.set({'vti_sessions': this.session_data}, ()=>{
-                            console.log(this.session_data, "Downvote successful");
+                            //alert user of vote
                             this.voteType = 0;
-
+                            this.refurbishContent();
                         }); //downvote = 0
                     }
                     else {
@@ -116,6 +116,22 @@ class Vote {
             };
             xmlhttp.open("POST", apiURL + "downvote?q=" + this.hostname, true);
             xmlhttp.send();
+        }
+    }
+
+    refurbishContent()
+    {
+        if(this.voteType == 1) //upvote
+        {
+            document.getElementById("choices").style.display = "none";
+            document.getElementById("displayResults").style.display = "inline-block";
+            document.getElementById("displayResults").innerHTML = `<div style="margin:10px !important; text-transform:uppercase; letter-spacing:1px; word-spacing:2px;" class="ui center aligned small green header">This page has been upvoted</div><br>`;
+        }
+        else if(this.voteType == 0) //downvote
+        {
+            document.getElementById("choices").style.display = "none";
+            document.getElementById("displayResults").style.display = "inline-block";
+            document.getElementById("displayResults").innerHTML = `<div style="margin:10px !important; text-transform:uppercase; letter-spacing:1px; word-spacing:2px;" class="ui center aligned small red header">This page has been downvoted</div><br>`;
         }
     }
 
@@ -144,18 +160,17 @@ function useToken() {
         const hash = new Hash(10000019, 1000);
         hash.setPrimeString(31);
         const current_hash_URL = hash.get_str_hash(url_polished);
-
         var voteType = -1,
             session_data = [];
 
         chrome.storage.sync.get('vti_sessions', data => {
             data = data.vti_sessions;
             if (data && data.length > 0) {
+                session_data = data;
                 for(let i = 0; i < data.length; i++)
                 {
                     let item = data[i];
-                    console.log(item);
-                    if (item && item.url == current_hash_URL) {
+                    if (item.url == current_hash_URL) {
                         voteType = item.voteType;
                         break;
                     }
@@ -168,17 +183,25 @@ function useToken() {
             const searchClass = new SearchEngine(url_polished),
                 launchVote = new Vote(searchClass.hostname, session_data, voteType);
 
-            document.getElementById("upvote").onclick = () => {
-                if (!launchVote.hasVoted()) {
-                    launchVote.sendUpvote();
+            if(voteType == -1)
+            {
+                document.getElementById("upvote").onclick = () => {
+                    if (!launchVote.hasVoted()) {
+                        launchVote.sendUpvote();
+                    }
+                }
+    
+                document.getElementById("downvote").onclick = () => {
+                    if (!launchVote.hasVoted()) {
+                        launchVote.sendDownvote();
+                    }
                 }
             }
-
-            document.getElementById("downvote").onclick = () => {
-                if (!launchVote.hasVoted()) {
-                    launchVote.sendDownvote();
-                }
+            else
+            {
+                launchVote.refurbishContent();
             }
+            
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = () => {
 
@@ -192,13 +215,14 @@ function useToken() {
 
                         document.getElementById("upvoteCount").innerText = data.data.path.upvotes;
                         document.getElementById("downvoteCount").innerText = data.data.path.downvotes;
+
                     }
                     else {
                         defaultCount();
                     }
                 }
             };
-            xmlhttp.open("GET", apiURL + "stats?q=" + searchClass.hostname, true);
+            xmlhttp.open("GET", apiURL + "stats?q=" + searchClass.getHostname(), true);
             xmlhttp.send();
         });
     });
@@ -206,6 +230,17 @@ function useToken() {
 
 useToken();
 
+/**
+ * DANGER : Use only when clearing ENTIRE Chrome session data
+ */
+function clearSyncStorage() {
+    chrome.storage.sync.clear(function () {
+        var error = chrome.runtime.lastError;
+        if (error) {
+            console.error(error);
+        }
+    })
+}
 
 var getLocation = function (href) {
     var l = document.createElement("a");

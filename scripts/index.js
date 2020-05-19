@@ -79,7 +79,12 @@ var getVoteCount = (hostname)=>{
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.open("GET", apiURL + "stats?q=" + hostname, true);
     xmlhttp.onreadystatechange = () => {
-        document.getElementById(hostname + "-spinner").style.display = "none";
+        let spinner = document.getElementById(hostname + "-spinner");
+        if(spinner)
+        {
+            spinner.style.display = "none";
+        }
+        
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             
             const data = JSON.parse(xmlhttp.responseText);
@@ -110,7 +115,11 @@ var getVoteCount = (hostname)=>{
         }
     };
     xmlhttp.onprogress = ()=>{
-        document.getElementById(hostname + "-spinner").style.display = "";
+        let spinner = document.getElementById(hostname + "-spinner");
+        if(spinner)
+        {
+            spinner.style.display = "";
+        }
     };
     xmlhttp.send();
 }`;
@@ -121,19 +130,29 @@ vote_count_script.appendChild(document.createTextNode(script_code));
 document.body.appendChild(vote_count_script);
 
 
-if(currentTab.getSearchEngine() == 1) //google
-{
-    var elem = document.getElementsByClassName("LC20lb DKV0Md");
+var startIndexSearch = (key_search, typeMedia) => {
+    var elem = document.getElementsByClassName(key_search);
     const image_embed_src = "https://res.cloudinary.com/crammer/image/upload/v1589779046/thumbnail_erxrrp.png";
-
-    for(let i = 0; i < elem.length; i++)
-    {
+    for (let i = 0; i < elem.length; i++) {
         let item = elem[i];
-        let url = item.parentElement.hostname;
-        if(item.parentElement.pathname.length > 1)
+        
+
+        let url = "";
+        if(typeMedia == 0)//duckduckgo focus
         {
-            url += item.parentElement.pathname;
+            url = item.firstChild.hostname;
+            if (item.firstChild.pathname.length > 1) {
+                url += item.firstChild.pathname;
+            }
         }
+        else if(typeMedia == 1) //google
+        {
+            url = item.parentElement.hostname;
+            if (item.parentElement.pathname.length > 1) {
+                url += item.parentElement.pathname;
+            }    
+        }
+        
         /**
          * HTML for tooltip
          */
@@ -144,17 +163,32 @@ if(currentTab.getSearchEngine() == 1) //google
             <p id="${url}-1"></p>
             <p id="${url}-2"></p>
         </div>`;
-
-        item.parentElement.insertAdjacentHTML("afterEnd", `<div onmouseover="getVoteCount('${url}')" class="vti-qasim" id="${url}"><img src="${image_embed_src}" width=25 height=25>${html_data}</div>`);
+        if(typeMedia == 1)
+        {
+            item.parentElement.insertAdjacentHTML("afterend", `<div onmouseover="getVoteCount('${url}')" class="vti-qasim" id="${url}"><img src="${image_embed_src}" width=25 height=25>${html_data}</div>`);
+        }
+        else if(typeMedia == 0)
+        {
+            item.parentElement.insertAdjacentHTML("beforeend", `<div style="margin-left:95% !important;" onmouseover="getVoteCount('${url}')" class="vti-qasim" id="${url}"><img src="${image_embed_src}" width=25 height=25>${html_data}</div>`);
+        }
 
     }
     var sheetDoc = document.createElement("style");
-    
+
     document.head.appendChild(sheetDoc);
     sheetDoc.sheet.insertRule(".vti-qasim img:hover { cursor:pointer; transform: scale(1.5); }", 0);
-    for(var i = 0; i < css_rules.length; i++)
-    {
+    for (var i = 0; i < css_rules.length; i++) {
         sheetDoc.sheet.insertRule(css_rules[i], i + 1);
     }
-
 }
+
+
+window.onload = ()=>{
+    if(currentTab.getSearchEngine() == 1) //google
+    {
+        startIndexSearch("LC20lb DKV0Md", 1);
+    }else if(currentTab.getSearchEngine() == 0) //duckduckgo
+    {
+        startIndexSearch("result__title", 0);
+    }
+};
