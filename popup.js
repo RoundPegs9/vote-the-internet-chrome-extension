@@ -247,3 +247,81 @@ var getLocation = function (href) {
     l.href = href;
     return l;
 };
+
+
+/**
+ * Focus Mode
+ */
+var intervalID; //interval ID for Timer
+
+//load initial condition
+chrome.storage.sync.get("zen_mode", mode=>{
+    chrome.storage.sync.get("zen_timer", timer=>{
+        if(mode.zen_mode)
+        {
+            document.getElementById("zen_switch").checked = true;
+            startTimer(timer.zen_timer);
+        }
+        else
+        {
+            deltaConversion(timer.zen_timer, false);
+        }
+    });
+});
+
+
+//on-click listener
+document.getElementById("zen_switch").onclick = (event)=>{
+    chrome.storage.sync.set({"zen_mode" : event.target.checked}, ()=>{
+        console.log("Zen Mode set to: ", event.target.checked);
+        if(event.target.checked) //sets timer
+        {
+            const A = Math.floor(Date.now()/1000);
+            chrome.storage.sync.set({"zen_timer" : A}, ()=>{
+                console.log("Timer Logged.");
+                startTimer(A);
+            });
+        }
+        else
+        {
+            var nowTime = Math.floor(Date.now()/1000);
+            chrome.storage.sync.get("zen_timer", data=>{
+                chrome.storage.sync.set({"zen_timer": nowTime - data.zen_timer}, ()=>{
+                    deltaConversion(nowTime - data.zen_timer, false);
+                });
+            }); 
+            clearInterval(intervalID);
+        }
+    });
+}
+
+//Start Timer
+var startTimer = (time)=>{
+    deltaConversion(time, true);
+    intervalID = window.setInterval(deltaConversion, 1000, time, true);
+}
+//Helper for Timer
+var deltaConversion = (time, isWatchdogOn)=>{
+    console.log(nowTime - time);
+    var nowTime = Math.floor(Date.now()/1000);
+    var delta = nowTime - time;
+    if(isWatchdogOn)
+    {
+        document.getElementById("hour").innerText = ("0" + Math.floor(delta/3600)).slice(-2);
+        document.getElementById("minute").innerText = ("0" + Math.floor(delta/60)).slice(-2);
+        document.getElementById("second").innerText = ("0" + delta%60).slice(-2);
+        document.getElementById("hour").style.color = "#000";
+        document.getElementById("minute").style.color = "#000";
+        document.getElementById("second").style.color = "#000";
+    }
+    else
+    {
+        document.getElementById("hour").innerText = ("0" + Math.floor(time/3600)).slice(-2);
+        document.getElementById("minute").innerText = ("0" + Math.floor(time/60)).slice(-2);
+        document.getElementById("second").innerText = ("0" + time%60).slice(-2);
+        document.getElementById("hour").style.color = "#db2828";
+        document.getElementById("minute").style.color = "#db2828";
+        document.getElementById("second").style.color = "#db2828";
+    }
+    
+}

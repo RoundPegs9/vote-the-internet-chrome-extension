@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="stylesheet" href="css/popup.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
-    
-  </head>
-  <body>
-  
+
+<head>
+  <link rel="stylesheet" href="css/popup.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+</head>
+
+<body>
+
 
 
 
@@ -16,6 +17,23 @@
       <h3 id="title">Vote the Internet</h3>
       <p id="caption">Crowdsourcing Trust</p>
     </div>
+    
+    <div class="border_top eight wide left floated column">
+        <h4 id="zen_label">Zen Mode</h4>
+    </div>
+
+    
+    <div class="border_top three wide left floated column">
+      <div class="ui fitted toggle checkbox">
+        <input id="zen_switch" type="checkbox">
+        <label></label>
+      </div>
+    </div>
+    <div class="border_top five wide right floated column">
+      <p><span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span></p>  
+    </div>
+
+
     <div class="eight wide column border_top">
       <h4 class="ui small center aligned green header">Upvotes</h4>
       <h4 class="ui medium center aligned header" id="upvoteCount">0</h4>
@@ -36,17 +54,24 @@
       <h4 class="ui medium center aligned header" id="hostDownvotes">0</h4>
     </div>
 
+
+
+
     <div class="sixteen wide column">
       <div id="choices">
         <div class="ui buttons">
-          <button id="upvote" class="ui medium left floated positive button"><i class="ui thumbs up center aligned icon"></i></button>
+          <button id="upvote" class="ui medium left floated positive button"><i
+              class="ui thumbs up center aligned icon"></i></button>
           <div class="or"></div>
-          <button id="downvote" class="ui medium right floated negative button"><i class="ui thumbs down center aligned icon"></i></button>
+          <button id="downvote" class="ui medium right floated negative button"><i
+              class="ui thumbs down center aligned icon"></i></button>
         </div>
       </div>
-      <div id="displayResults">
-        
-      </div>
+
+
+      <div id="displayResults"></div>
+
+
     </div>
     <div id="socials" class="sixteen wide column">
       <a href="https://www.youtube.com/watch?v=NA3KoBhlMns" target="_blank"><i class="ui red youtube icon"></i></a>
@@ -57,12 +82,13 @@
     </div>
   </div>
 
-  
-  
-  
-  
-  
+
+
+
+
+
   <script type="text/javascript" src="popup.js"></script>
-  
-  </body>
+
+</body>
+
 </html>

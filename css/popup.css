@@ -62,3 +62,18 @@ body {
   {
     display: none;
   }
+  /* Focus mode styling */
+  #zen_label
+  {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    word-spacing: 6px;
+    margin-right: 10%;
+    color: #173084;
+    font-weight: 900;
+  }
+  .ui.toggle.fitted.checkbox
+  {
+    margin-left: -100% !important;
+    margin-top: -2px !important;
+  }
