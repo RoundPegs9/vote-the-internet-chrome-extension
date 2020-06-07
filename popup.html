@@ -17,12 +17,12 @@
       <h3 id="title">Vote the Internet</h3>
       <p id="caption">Crowdsourcing Trust</p>
     </div>
-    
+
     <div class="border_top eight wide left floated column">
-        <h4 id="zen_label">Zen Mode</h4>
+      <h4 id="zen_label">Zen Mode</h4>
     </div>
 
-    
+
     <div class="border_top three wide left floated column">
       <div class="ui fitted toggle checkbox">
         <input id="zen_switch" type="checkbox">
@@ -30,9 +30,18 @@
       </div>
     </div>
     <div class="border_top five wide right floated column">
-      <p><span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span></p>  
+      <p><span id="hour">00</span>:<span id="minute">00</span>:<span id="second">00</span></p>
+    </div>
+    
+    
+    <div class="elevate eleven wide column">
+      <a id="analytics_label" href="./analytics.html" target="_blank" >View Analytics <i class="external black icon"></i></a> 
     </div>
 
+    <div data-position="bottom right" data-tooltip="Time spent today in Zen mode" id="flow" class="elevate five wide column">
+      <p class="make_green"><span id="hour_daily">00</span>:<span id="minute_daily">00</span>:<span id="second_daily">00</span></p>
+      
+    </div>
 
     <div class="eight wide column border_top">
       <h4 class="ui small center aligned green header">Upvotes</h4>
@@ -83,12 +92,7 @@
   </div>
 
 
-
-
-
-
   <script type="text/javascript" src="popup.js"></script>
-
 </body>
 
 </html>

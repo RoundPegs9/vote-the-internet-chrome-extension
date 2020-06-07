@@ -265,7 +265,17 @@ chrome.storage.sync.get("zen_mode", mode=>{
         else
         {
             deltaConversion(timer.zen_timer, false);
+            chrome.storage.sync.get("zen_daily_metrics", zen_daily_metrics=>{
+                zen_daily_metrics = zen_daily_metrics.zen_daily_metrics;
+                var today = new Date();
+                    today = (today.getMonth() + 1).toString() + "-" + today.getDate().toString() + "-" + today.getFullYear().toString();
+                if(zen_daily_metrics && zen_daily_metrics.timeline && zen_daily_metrics.timeline[today])
+                {
+                    tally_UI(parseInt(zen_daily_metrics.timeline[today]));
+                }
+            });
         }
+        
     });
 });
 
@@ -289,7 +299,12 @@ document.getElementById("zen_switch").onclick = (event)=>{
             chrome.storage.sync.get("zen_timer", data=>{
                 chrome.storage.sync.set({"zen_timer": nowTime - data.zen_timer}, ()=>{
                     deltaConversion(nowTime - data.zen_timer, false);
+
+                     /**
+                      * Daily Metrics
+                      */
                     daily_metric_generation(nowTime, data.zen_timer); //tallies up daily metrics for analytics
+
                 });
             }); 
             clearInterval(intervalID);
@@ -299,6 +314,11 @@ document.getElementById("zen_switch").onclick = (event)=>{
 
 //Start Timer
 var startTimer = (time)=>{
+    /**
+     * HIDING Analytics Pool in Zen Mode
+    */
+    document.getElementsByClassName("elevate")[0].style.display = "none";
+    document.getElementsByClassName("elevate")[1].style.display = "none";
     deltaConversion(time, true);
     intervalID = window.setInterval(deltaConversion, 1000, time, true);
 }
@@ -355,15 +375,26 @@ var daily_metric_generation = (nowTime, endZenTime)=>{
         else
         {
             let struct = {
-                timeline : {},
-                flow : {}
+                timeline : {}
             }
             struct.timeline[today] = parseInt(nowTime - endZenTime);
             zen_metrics = struct;
         }
-        /** TODO for Flow */
         chrome.storage.sync.set({"zen_daily_metrics": zen_metrics}, ()=>{
             console.debug("Timeline updated. Daily zen time in #seconds:: ", zen_metrics.timeline[today]);
+            tally_UI(zen_metrics.timeline[today]);
         });
     });
+}
+
+//UI display for Daily tally
+var tally_UI = (time) => {
+    /**
+    * DISPLAYING Analytics Pool in Zen Mode
+    */
+    document.getElementsByClassName("elevate")[0].style.display = "";
+    document.getElementsByClassName("elevate")[1].style.display = "";
+    document.getElementById("hour_daily").innerText = ("0" + Math.floor(time / 3600)).slice(-2);
+    document.getElementById("minute_daily").innerText = ("0" + Math.floor(time / 60) % 60).slice(-2);
+    document.getElementById("second_daily").innerText = ("0" + time % 60).slice(-2);
 }

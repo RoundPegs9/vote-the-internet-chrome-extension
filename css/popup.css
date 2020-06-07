@@ -77,3 +77,22 @@ body {
     margin-left: -100% !important;
     margin-top: -2px !important;
   }
+  .make_green
+  {
+    color: #21ba45!important;
+  }
+  #analytics_label
+  {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    word-spacing: 3px;
+    margin-right: 17%;
+    font-size: 0.7em;
+    font-family: cursive;
+    color: #2185d0;
+    font-weight: 900;
+  }
+  .elevate
+  {
+    margin-top:-9px;
+  }

@@ -21,5 +21,5 @@
           "js": ["scripts/index.js"]
         }
       ],
-      "content_security_policy": "script-src 'self' https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js; object-src 'self'"
+      "content_security_policy": "script-src 'self' https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js; object-src 'self'"
 }
