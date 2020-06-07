@@ -4,10 +4,13 @@ chrome.storage.sync.get("zen_daily_metrics", zen_data => {
     zen_data = zen_data.zen_daily_metrics;
     if (zen_data && zen_data.timeline) {
         var X = [],
-            Y = [];
+            Y = [],
+            Y_prime = [];
+
         Object.keys(zen_data.timeline).map(function (key) {
             X.push(key);
             Y.push(parseFloat(zen_data.timeline[key] / 3600).toPrecision(3));
+            Y_prime.push(parseFloat(( 57600 /** assuming 8 hours of sleep **/ - zen_data.timeline[key] ) / 3600 ).toPrecision(3))
         });
         var myChart = new Chart(ctx, {
             type: 'line',
@@ -16,12 +19,23 @@ chrome.storage.sync.get("zen_daily_metrics", zen_data => {
                 datasets: [{
                     label: 'Hours spent in flow',
                     data: Y,
-                    fill: true,
+                    fill: false,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 2
+                },{
+                    label: 'Hours not in flow',
+                    data: Y_prime,
+                    fill: false,
+                    backgroundColor: [
+                        'rgb(75, 192, 192)'
+                    ],
+                    borderColor: [
+                        'rgb(75, 192, 192)'
                     ],
                     borderWidth: 2
                 }]
