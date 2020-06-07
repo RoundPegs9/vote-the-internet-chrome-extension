@@ -289,6 +289,7 @@ document.getElementById("zen_switch").onclick = (event)=>{
             chrome.storage.sync.get("zen_timer", data=>{
                 chrome.storage.sync.set({"zen_timer": nowTime - data.zen_timer}, ()=>{
                     deltaConversion(nowTime - data.zen_timer, false);
+                    daily_metric_generation(nowTime, data.zen_timer); //tallies up daily metrics for analytics
                 });
             }); 
             clearInterval(intervalID);
@@ -305,7 +306,6 @@ var startTimer = (time)=>{
 //Helper for Timer
 var deltaConversion = (time, isWatchdogOn)=>{
     var nowTime = Math.floor(Date.now()/1000);
-    console.log(nowTime - time);
     var delta = nowTime - time;
     if(isWatchdogOn)
     {
@@ -326,4 +326,44 @@ var deltaConversion = (time, isWatchdogOn)=>{
         document.getElementById("second").style.color = "#db2828";
     }
     
+}
+
+//Accumulator
+var daily_metric_generation = (nowTime, endZenTime)=>{
+    //Zen mode accumulator and analytics dashboard (part 1)
+    var today = new Date();
+    today = (today.getMonth() + 1).toString() + "-" + today.getDate().toString() + "-" + today.getFullYear().toString();
+
+    chrome.storage.sync.get("zen_daily_metrics", zen_metrics=>{
+        zen_metrics = zen_metrics.zen_daily_metrics;
+        
+        console.debug(zen_metrics);
+
+        if(zen_metrics && zen_metrics.timeline)
+        {
+            let today_metrics = zen_metrics.timeline[today];
+            if(today_metrics)
+            {
+                today_metrics += parseInt(nowTime - endZenTime);
+            }
+            else
+            {
+                today_metrics = parseInt(nowTime - endZenTime);
+            }
+            zen_metrics.timeline[today] = today_metrics;
+        }
+        else
+        {
+            let struct = {
+                timeline : {},
+                flow : {}
+            }
+            struct.timeline[today] = parseInt(nowTime - endZenTime);
+            zen_metrics = struct;
+        }
+        /** TODO for Flow */
+        chrome.storage.sync.set({"zen_daily_metrics": zen_metrics}, ()=>{
+            console.debug("Timeline updated. Daily zen time in #seconds:: ", zen_metrics.timeline[today]);
+        });
+    });
 }
