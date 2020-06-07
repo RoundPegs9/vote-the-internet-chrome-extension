@@ -270,6 +270,7 @@ chrome.storage.sync.get("zen_mode", mode=>{
 });
 
 
+
 //on-click listener
 document.getElementById("zen_switch").onclick = (event)=>{
     chrome.storage.sync.set({"zen_mode" : event.target.checked}, ()=>{
@@ -300,15 +301,16 @@ var startTimer = (time)=>{
     deltaConversion(time, true);
     intervalID = window.setInterval(deltaConversion, 1000, time, true);
 }
+
 //Helper for Timer
 var deltaConversion = (time, isWatchdogOn)=>{
-    console.log(nowTime - time);
     var nowTime = Math.floor(Date.now()/1000);
+    console.log(nowTime - time);
     var delta = nowTime - time;
     if(isWatchdogOn)
     {
         document.getElementById("hour").innerText = ("0" + Math.floor(delta/3600)).slice(-2);
-        document.getElementById("minute").innerText = ("0" + Math.floor(delta/60)).slice(-2);
+        document.getElementById("minute").innerText = ("0" + Math.floor(delta/60)%60).slice(-2);
         document.getElementById("second").innerText = ("0" + delta%60).slice(-2);
         document.getElementById("hour").style.color = "#000";
         document.getElementById("minute").style.color = "#000";
@@ -317,7 +319,7 @@ var deltaConversion = (time, isWatchdogOn)=>{
     else
     {
         document.getElementById("hour").innerText = ("0" + Math.floor(time/3600)).slice(-2);
-        document.getElementById("minute").innerText = ("0" + Math.floor(time/60)).slice(-2);
+        document.getElementById("minute").innerText = ("0" + Math.floor(time/60)%60).slice(-2);
         document.getElementById("second").innerText = ("0" + time%60).slice(-2);
         document.getElementById("hour").style.color = "#db2828";
         document.getElementById("minute").style.color = "#db2828";
