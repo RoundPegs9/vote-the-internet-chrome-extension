@@ -7,16 +7,16 @@ chrome.storage.sync.get("zen_daily_metrics", zen_data => {
             Y = [];
         Object.keys(zen_data.timeline).map(function (key) {
             X.push(key);
-            Y.push(zen_data.timeline[key] / 3600);
+            Y.push(parseFloat(zen_data.timeline[key] / 3600).toPrecision(3));
         });
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: X,
                 datasets: [{
-                    label: '# hours in Zen over time',
+                    label: 'Hours spent in flow',
                     data: Y,
-                    fill: false,
+                    fill: true,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)'
                     ],
@@ -45,7 +45,7 @@ chrome.storage.sync.get("zen_daily_metrics", zen_data => {
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'Day'
+                            labelString: 'Day (MM-DD-YYYY)'
                         }
                     }],
                     yAxes: [{
