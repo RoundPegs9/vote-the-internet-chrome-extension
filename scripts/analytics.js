@@ -10,6 +10,7 @@ chrome.storage.sync.get("zen_daily_metrics", zen_data => {
         
         Object.keys(zen_data.timeline).map(function (key) {
             X.push(key);
+            
             let f = parseFloat(zen_data.timeline[key] / 3600).toPrecision(3),
                 nf = parseFloat(( 57600 /** assuming 8 hours of sleep **/ - zen_data.timeline[key] ) / 3600 ).toPrecision(3);
             hours.f += parseFloat(f);
