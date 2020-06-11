@@ -268,7 +268,7 @@ chrome.storage.sync.get("zen_mode", mode=>{
             chrome.storage.sync.get("zen_daily_metrics", zen_daily_metrics=>{
                 zen_daily_metrics = zen_daily_metrics.zen_daily_metrics;
                 var today = new Date();
-                    today = (today.getMonth() + 1).toString() + "-" + today.getDate().toString() + "-" + today.getFullYear().toString();
+                    today = ("0" + (today.getMonth() + 1).toString()).slice(-2) + "-" + ("0" + today.getDate().toString()).slice(-2) + "-" + today.getFullYear().toString();
                 if(zen_daily_metrics && zen_daily_metrics.timeline && zen_daily_metrics.timeline[today])
                 {
                     tally_UI(parseInt(zen_daily_metrics.timeline[today]));
@@ -352,7 +352,7 @@ var deltaConversion = (time, isWatchdogOn)=>{
 var daily_metric_generation = (nowTime, endZenTime)=>{
     //Zen mode accumulator and analytics dashboard (part 1)
     var today = new Date();
-    today = (today.getMonth() + 1).toString() + "-" + today.getDate().toString() + "-" + today.getFullYear().toString();
+    today = ("0" + (today.getMonth() + 1).toString()).slice(-2) + "-" + ("0" + today.getDate().toString()).slice(-2) + "-" + today.getFullYear().toString();
 
     chrome.storage.sync.get("zen_daily_metrics", zen_metrics=>{
         zen_metrics = zen_metrics.zen_daily_metrics;
