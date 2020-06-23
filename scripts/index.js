@@ -2,8 +2,8 @@ class SearchEngine {
     constructor(hostname) {
         this.hostname = hostname
     }
-    isSearchEngine() {
-        return this.hostname === "www.google.com" || this.hostname === "duckduckgo.com"
+    isSearchEngine(){
+	return this.hostname === "www.google.com" || this.hostname === "duckduckgo.com"
     }
     getHostname() {
         return this.hostname
@@ -269,3 +269,4 @@ window.onload = () => {
     }
 
 };
+
