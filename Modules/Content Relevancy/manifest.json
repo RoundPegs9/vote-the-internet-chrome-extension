@@ -1,6 +1,0 @@
-{
-  "name": "Content Relevancy",
-  "version": "1.0",
-  "description": "Retrieve the most important content from a webpage.",
-  "manifest_version": 2
-}
