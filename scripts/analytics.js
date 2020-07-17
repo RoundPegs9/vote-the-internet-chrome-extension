@@ -1,5 +1,13 @@
+/**
+ * Define Canvas
+ */
 var ctx = document.getElementById('analytics').getContext('2d');
 var dotw = document.getElementById('avg_hours').getContext('2d');
+var hpw = document.getElementById('hours_week').getContext('2d');
+
+/**
+ * Retrieve data from shared local session (Chrome)
+ */
 chrome.storage.sync.get("zen_daily_metrics", zen_data => {
     zen_data = zen_data.zen_daily_metrics;
     if (zen_data && zen_data.timeline) {
@@ -193,6 +201,97 @@ chrome.storage.sync.get("zen_daily_metrics", zen_data => {
                         scaleLabel: {
                             display: true,
                             labelString: 'Time (hour)'
+                        }
+                    }]
+                }
+            }
+        });
+
+        /**
+         * Create a chart for #hours per week
+         */
+        var hours_week = [];
+        var Y_prime_copy = [...Y_prime];
+        while(Y_prime_copy.length)
+        {
+            hours_week.push(parseFloat((Y_prime_copy.splice(0, 6).reduce((a, b) => parseFloat(a + b), 0)/3600).toPrecision(3)));
+        }
+
+        var num_weeks = Array.from({ length: hours_week.length }, (_, i) => i+1);
+        
+        new Chart(hpw, {
+            type: 'bar',
+            data: {
+                labels: num_weeks,
+                datasets: [{
+                    label: 'Hours worked per week',
+                    data: hours_week,
+                    fill: false,
+                    backgroundColor: [
+                        "rgba(255, 99, 132, 0.2)",
+                        "rgba(255, 159, 64, 0.2)",
+                        "rgba(255, 205, 86, 0.2)",
+                        "rgba(75, 192, 192, 0.2)",
+                        "rgba(54, 162, 235, 0.2)",
+                        "rgba(153, 102, 255, 0.2)",
+                        "rgba(49, 162, 27, 0.2)"
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        "rgb(255, 159, 64)",
+                        "rgb(255, 205, 86)",
+                        "rgb(75, 192, 192)",
+                        "rgb(54, 162, 235)",
+                        "rgb(153, 102, 255)",
+                        "rgb(49, 162, 27)"
+                    ],
+                    borderWidth: 2
+                }/** ,{
+                    type: 'line',
+                    data : avg_day,
+                    label : 'Avg. #hours per day',
+                    fill: false,
+                    borderColor: ["rgb(0, 0, 0)"],
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        "rgb(255, 159, 64)",
+                        "rgb(255, 205, 86)",
+                        "rgb(75, 192, 192)",
+                        "rgb(54, 162, 235)",
+                        "rgb(153, 102, 255)",
+                        "rgb(49, 162, 27)"
+                    ],
+                    borderWidth : 1.5
+
+                }*/]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: 'Hours worked in a week'
+                },
+                tooltips: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                hover: {
+                    mode: 'nearest',
+                    intersect: true
+                },
+                scales: {
+                    xAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Week number'
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Hours'
                         }
                     }]
                 }
