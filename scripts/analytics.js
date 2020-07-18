@@ -211,10 +211,10 @@ chrome.storage.sync.get("zen_daily_metrics", zen_data => {
          * Create a chart for #hours per week
          */
         var hours_week = [];
-        var Y_prime_copy = [...Y_prime];
-        while(Y_prime_copy.length)
+        var Y_copy = [...Y];
+        while(Y_copy.length)
         {
-            hours_week.push(parseFloat(Y_prime_copy.splice(0, 7).reduce((a, b) => parseFloat(a) + parseFloat(b), 0).toPrecision(3)));
+            hours_week.push(parseFloat(Y_copy.splice(0, 7).reduce((a, b) => parseFloat(a) + parseFloat(b), 0).toPrecision(3)));
         }
         var num_weeks = Array.from({ length: hours_week.length }, (_, i) => i+1);
         
