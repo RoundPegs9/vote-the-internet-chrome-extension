@@ -218,7 +218,7 @@ chrome.storage.sync.get("zen_daily_metrics", zen_data => {
         }
         var num_weeks = Array.from({ length: hours_week.length }, (_, i) => i+1);
         
-        const hpw = new Chart(hpw, {
+        new Chart(hpw, {
             type: 'bar',
             data: {
                 labels: num_weeks,
