@@ -214,7 +214,7 @@ chrome.storage.sync.get("zen_daily_metrics", zen_data => {
         var Y_prime_copy = [...Y_prime];
         while(Y_prime_copy.length)
         {
-            hours_week.push(parseFloat(Y_prime_copy.splice(0, 7).reduce((a, b) => parseFloat(a + b), 0).toPrecision(3)));
+            hours_week.push(parseFloat(Y_prime_copy.splice(0, 7).reduce((a, b) => parseFloat(a) + parseFloat(b), 0).toPrecision(3)));
         }
         var num_weeks = Array.from({ length: hours_week.length }, (_, i) => i+1);
         
