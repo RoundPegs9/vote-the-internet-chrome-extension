@@ -7,6 +7,11 @@ Chrome extension to upvote/downvote websites based on their content. Crowrdsourc
 # Enable/Disable websites + track your focus to increase and analyze your productivity:
 ![](https://github.com/RoundPegs9/vote-the-internet-chrome-extension/blob/master/assets/zen.gif)
 
+
+# Quick video explaining features and NEED for a community driven internet:
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/NA3KoBhlMns/0.jpg)](https://www.youtube.com/watch?v=NA3KoBhlMns)
+
+
 ### Gist:
 Information is growing at rates incomprehensible to humans. Over 5,000 academic papers are published each day. With an abundance of information, it has become increasingly evident that filtering out jargon and misinformation from the internet is a vital part of free speech to help us make better informed decisions. 
 Vote the Internet is a browser extension that crowdsources trust by allowing people to vote on the content of any website. This enables our users to preview credibility statistics of any website prior to opening it (version 1 - released on March 18, 2020).
