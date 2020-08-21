@@ -12,6 +12,8 @@ Crowrdsourcing trust by voting on the content of __any__ website on the internet
 </ol>
 
 ## Vote on the content of any website on the internet:
+![](https://github.com/RoundPegs9/vote-the-internet-chrome-extension/blob/master/assets/info_votes_search.png)
+
 ![](https://github.com/RoundPegs9/vote-the-internet-chrome-extension/blob/master/assets/vti.gif)
 
 ## Enable/Disable websites + track your focus to increase productivity:
