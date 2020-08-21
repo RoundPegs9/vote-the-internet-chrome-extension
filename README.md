@@ -2,15 +2,19 @@
 Crowrdsourcing trust by voting on the content of __any__ website on the internet!
 
 
-## Why do we need a community driven internet?
+## Why we NEED a community driven internet:
 [![Vote the Internet: motivation](https://img.youtube.com/vi/NA3KoBhlMns/0.jpg)](https://www.youtube.com/watch?v=NA3KoBhlMns)
 
-### Product demo:
+# Product demo:
+<ol>
+<li>Voting</li>
+<li>Zen mode</li>
+</ol>
 
-# Vote on the content of any website on the internet:
+## Vote on the content of any website on the internet:
 ![](https://github.com/RoundPegs9/vote-the-internet-chrome-extension/blob/master/assets/vti.gif)
 
-# Enable/Disable websites + track your focus to increase and analyze your productivity:
+## Enable/Disable websites + track your focus to increase and analyze your productivity:
 ![](https://github.com/RoundPegs9/vote-the-internet-chrome-extension/blob/master/assets/zen.gif)
 
 ### Gist:
