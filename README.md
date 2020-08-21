@@ -1,5 +1,21 @@
-# vote-the-internet-chrome_extension
-Chrome extension to upvote/downvote websites based on their content. Crowrdsourcing trust.
+# Vote the Internet
+Crowrdsourcing trust by voting on the content of __any__ website on the internet!
+
+
+## Why we NEED a community driven internet:
+[![Vote the Internet: motivation](https://img.youtube.com/vi/NA3KoBhlMns/0.jpg)](https://www.youtube.com/watch?v=NA3KoBhlMns)
+
+# Product demo:
+<ol>
+<li>Voting</li>
+<li>Zen mode</li>
+</ol>
+
+## Vote on the content of any website on the internet:
+![](https://github.com/RoundPegs9/vote-the-internet-chrome-extension/blob/master/assets/vti.gif)
+
+## Enable/Disable websites + track your focus to increase productivity:
+![](https://github.com/RoundPegs9/vote-the-internet-chrome-extension/blob/master/assets/zen.gif)
 
 ### Gist:
 Information is growing at rates incomprehensible to humans. Over 5,000 academic papers are published each day. With an abundance of information, it has become increasingly evident that filtering out jargon and misinformation from the internet is a vital part of free speech to help us make better informed decisions. 
