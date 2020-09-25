@@ -16,7 +16,6 @@ class SearchEngine {
     }
 }
 
-
 class ZenSites {
     constructor(hostname, pathname, zenmode) {
         this.hostname = hostname;
