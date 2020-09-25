@@ -1,4 +1,35 @@
+class Predict {
+    constructor() {
+        this.hours = [];
+        this.gather_data(); //automatically gather data
+    }
+    gather_data(){
+        // collect data into (x:day_number, y:hours_worked) tuple
+        let Y = [];
+        chrome.storage.sync.get("zen_daily_metrics", zen_data => {
+            zen_data = zen_data.zen_daily_metrics;
+            if (zen_data && zen_data.timeline) {
+                let i = 0;
+                Object.keys(zen_data.timeline).map(function (key) {
+                    let f = parseFloat(zen_data.timeline[key] / 3600).toPrecision(3);
+                    Y.push(parseFloat(f)); //get number of hours
+                    i++;
+                });
+            }
+            Y.pop(); //remove today's data for pure prediction
+            this.hours = Y;
+        });
+    }
+    get_data()
+    {
+        return this.hours;
+    }
+}
+
 const apiURL = "https://vti-api.herokuapp.com/";
+
+/** Gather existing data, if present for (day, hour) */
+var regression = new Predict();
 
 class Hash {
     constructor(M, P) {
@@ -180,6 +211,11 @@ function useToken() {
             /**
              * Main function
              */
+            
+            /**
+             * Get Predicted number of hours of flow for today.
+             */
+            predict_hours();
             const searchClass = new SearchEngine(url_polished),
                 launchVote = new Vote(searchClass.hostname, session_data, voteType);
 
@@ -397,4 +433,33 @@ var tally_UI = (time) => {
     document.getElementById("hour_daily").innerText = ("0" + Math.floor(time / 3600)).slice(-2);
     document.getElementById("minute_daily").innerText = ("0" + Math.floor(time / 60) % 60).slice(-2);
     document.getElementById("second_daily").innerText = ("0" + time % 60).slice(-2);
+}
+
+/**
+ * Get predicted number of hours worked for today
+ * based on past history.
+ */
+
+var predict_hours = () => {
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = () => {
+
+        if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+            const data = JSON.parse(xmlhttp.responseText);
+            console.log(data);
+            let code = data.code;
+            if (code === 200) //data exists
+            {
+                console.log(data);
+                document.getElementById('flow').dataset.tooltip = "Predicted flow hours: " + data.data;
+            }
+            else
+            {
+                document.getElementById('flow').dataset.tooltip = "Time spent today in Zen mode";
+            }
+        }
+    };
+    xmlhttp.open("GET", apiURL + "predict?data=[" + regression.get_data() + "]", true);
+    xmlhttp.send();
 }
