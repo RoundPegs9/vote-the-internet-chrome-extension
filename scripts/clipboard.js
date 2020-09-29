@@ -27,7 +27,8 @@ $("ul").on("click", "span", function(event){
 
 $("input[type='text']").keypress(function(event){
 	if(event.which === 13){
-		var $newItem = $(this).val();
+        
+        var $newItem = $(this).val();
 		if ($newItem.length > 3) {
             $(this).val("");
             chrome.storage.sync.get('vti_clipboard', data=>{

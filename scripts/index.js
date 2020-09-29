@@ -240,6 +240,7 @@ var startIndexSearch = (key_search, typeMedia) => {
 
 window.onload = () => {
 
+    //update site based on type of site.
     chrome.storage.sync.get("zen_mode", data => {
         var zen = new ZenSites(document.location.hostname, document.location.pathname, data.zen_mode);
         zen.youtube_custom();
@@ -258,7 +259,7 @@ window.onload = () => {
         }
 
     });
-
+    //update appearence for search engine
     if (currentTab.getSearchEngine() == 1) //google
     {
         startIndexSearch("LC20lb DKV0Md", 1);
@@ -267,5 +268,27 @@ window.onload = () => {
         startIndexSearch("result__title", 0);
     }
 
+    //clipboard functionality
+    let source = document.querySelector('body');
+    source.addEventListener('copy', (event) => {
+        const selection = document.getSelection();
+        chrome.storage.sync.get('vti_clipboard', data=>{
+            data = data.vti_clipboard;
+            let date = new Date().toDateString();
+            if(data != undefined && Object.keys(data).length > 0) //records exist
+            {
+                data[selection.toString()] = date;
+            }
+            else
+            {   
+                data = {};
+                data[selection.toString()] = date;
+            }
+            chrome.storage.sync.set({'vti_clipboard': data}, ()=>{
+                //done
+            });
+        });
+        // event.preventDefault();
+    });
 };
 
