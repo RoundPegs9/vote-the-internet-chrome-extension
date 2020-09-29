@@ -12,12 +12,15 @@ $("ul").on("click", "span", function(event){
             chrome.storage.sync.get('vti_clipboard', data=>{
                 data = data.vti_clipboard;
                 let text =  $(this).find('.clip').text();
-                if(data != undefined && data[text] != undefined) //should never exist, but better be safe than sorry!
+                if(data != undefined) //should never exist, but better be safe than sorry!
                 {
-                    delete data[text];
-                    chrome.storage.sync.set({'vti_clipboard':data}, ()=>{
-                        $(this).remove();
-                    });
+                    if(data[text] != undefined)
+                    {
+                        delete data[text];
+                        chrome.storage.sync.set({'vti_clipboard':data}, ()=>{
+                            $(this).remove();
+                        });
+                    }
                 }
             });
         });
@@ -70,10 +73,13 @@ function copyToClipboard(element) {
 // Load initial results with queries
 chrome.storage.sync.get('vti_clipboard', data=>{
     data = data.vti_clipboard;
-    if(data != undefined && Object.keys(data).length > 0)
+    if(data != undefined)
     {
-        for (var key in data){
-            $("ul").append("<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip'>"+ key + "</span><p>" + data[key] + "</p>" + "</li>")            
-          }
+        if(Object.keys(data).length > 0)
+        {
+            for (var key in data){
+                $("ul").append("<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip'>"+ key + "</span><p>" + data[key] + "</p>" + "</li>")            
+              }
+        }
     }
 });
