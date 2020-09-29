@@ -8,7 +8,7 @@ $("ul").on("click", "li", function(){
 $("ul").on("click", "span", function(event){
     if($(this).attr('class') == 'delete')
     {
-        $(this).parent().fadeOut(500,function(){
+        $(this).parent().fadeOut(450,function(){
             chrome.storage.sync.get('vti_clipboard', data=>{
                 data = data.vti_clipboard;
                 let text =  $(this).find('.clip').text();
@@ -38,8 +38,9 @@ $("input[type='text']").keypress(function(event){
                     data[$newItem] = date;
                 }
                 else
-                {
-                    data = {$newItem : date};
+                {   
+                    data = {};
+                    data[$newItem] = date;
                 }
                 chrome.storage.sync.set({'vti_clipboard': data}, ()=>{
                     $("ul").append("<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip'>"+ $newItem + "</span><p>" + date + "</p>" + "</li>")            
@@ -69,7 +70,7 @@ function copyToClipboard(element) {
 // Load initial results with queries
 chrome.storage.sync.get('vti_clipboard', data=>{
     data = data.vti_clipboard;
-    if(data != undefined)
+    if(data != undefined && Object.keys(data).length > 0)
     {
         for (var key in data){
             $("ul").append("<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip'>"+ key + "</span><p>" + data[key] + "</p>" + "</li>")            
