@@ -30,6 +30,9 @@ li {
 	line-height: 40px;
 	border: solid #2980b9 10px;
 	padding: 10px;
+	font-size: 18px;
+	color: black;
+	font-family: 'Courier New', Courier, monospace;
 	color: #666;
 }
 
@@ -37,7 +40,7 @@ li:nth-child(2n){
 	background: #f7f7f7;
 }
 
-span {
+.delete {
 	background: #e74c3c;
     height: 30px;
     padding-top: 10px;
@@ -50,7 +53,7 @@ span {
 	opacity: 0;
 }
 
-li:hover span {
+li:hover .delete {
 	width: 40px;
 	opacity: 1.0;
 }
@@ -81,4 +84,5 @@ input:focus{
 .selected {
 	color: gray;
 	cursor: pointer;
+	text-decoration: line-through;
 }
