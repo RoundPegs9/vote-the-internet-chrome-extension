@@ -12,15 +12,12 @@ $("ul").on("click", "span", function(event){
             chrome.storage.sync.get('vti_clipboard', data=>{
                 data = data.vti_clipboard;
                 let text =  $(this).find('.clip').text();
-                if(data != undefined) //should never exist, but better be safe than sorry!
+                if(data != undefined && data[text] != undefined) //should never exist, but better be safe than sorry!
                 {
-                    if(data[text] != undefined)
-                    {
-                        delete data[text];
-                        chrome.storage.sync.set({'vti_clipboard':data}, ()=>{
-                            $(this).remove();
-                        });
-                    }
+                    delete data[text];
+                    chrome.storage.sync.set({'vti_clipboard':data}, ()=>{
+                        $(this).remove();
+                    });
                 }
             });
         });
@@ -36,7 +33,7 @@ $("input[type='text']").keypress(function(event){
             chrome.storage.sync.get('vti_clipboard', data=>{
                 data = data.vti_clipboard;
                 let date = new Date().toDateString();
-                if(Object.keys(data).length > 0) //records exist
+                if(data != undefined && Object.keys(data).length > 0) //records exist
                 {
                     data[$newItem] = date;
                 }
@@ -49,7 +46,6 @@ $("input[type='text']").keypress(function(event){
                     $("ul").append("<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip'>"+ $newItem + "</span><p>" + date + "</p>" + "</li>")            
                 });
             });
-			
 		} else {
 			$(this).val("");
 			$(this).attr("placeholder", "Need at least 4 characters!");			
@@ -73,13 +69,10 @@ function copyToClipboard(element) {
 // Load initial results with queries
 chrome.storage.sync.get('vti_clipboard', data=>{
     data = data.vti_clipboard;
-    if(data != undefined)
+    if(data != undefined && Object.keys(data).length > 0)
     {
-        if(Object.keys(data).length > 0)
-        {
-            for (var key in data){
-                $("ul").append("<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip'>"+ key + "</span><p>" + data[key] + "</p>" + "</li>")            
-              }
-        }
+        for (var key in data){
+            $("ul").append("<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip'>"+ key + "</span><p>" + data[key] + "</p>" + "</li>")            
+            }
     }
 });
