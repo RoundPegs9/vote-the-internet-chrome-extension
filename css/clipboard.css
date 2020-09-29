@@ -86,3 +86,10 @@ input:focus{
 	cursor: pointer;
 	text-decoration: line-through;
 }
+
+p
+{
+	font-size:0.8em;
+	text-align:right;
+	margin: 0%;
+}
