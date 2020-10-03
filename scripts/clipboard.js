@@ -27,7 +27,6 @@ $("ul").on("click", "span", function(event){
 
 $("input[type='text']").keypress(function(event){
 	if(event.which === 13){
-        
         var $newItem = $(this).val();
 		if ($newItem.length > 3) {
             $(this).val("");
@@ -44,7 +43,9 @@ $("input[type='text']").keypress(function(event){
                     data[$newItem] = date;
                 }
                 chrome.storage.sync.set({'vti_clipboard': data}, ()=>{
-                    $("ul").append("<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip'>"+ $newItem + "</span><p>" + date + "</p>" + "</li>")            
+                    let current_length = $(".delete").length;
+                    $("ul").append(`<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip' id= ${current_length}>`+ $newItem + "</span><p>" + date + "</p>" + "</li>")            
+                    document.getElementById(current_length).innerText = $newItem;
                 });
             });
 		} else {
@@ -72,8 +73,11 @@ chrome.storage.sync.get('vti_clipboard', data=>{
     data = data.vti_clipboard;
     if(data != undefined && Object.keys(data).length > 0)
     {
+        let current_length = 0
         for (var key in data){
-            $("ul").append("<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip'>"+ key + "</span><p>" + data[key] + "</p>" + "</li>")            
+            $("ul").append(`<li><span class='delete'><i class='fa fa-trash'></i></span><span class='clip' id=${current_length}>`+ key + "</span><p>" + data[key] + "</p>" + "</li>")            
+            document.getElementById(current_length).innerText = key;
+            current_length++;
             }
     }
 });
