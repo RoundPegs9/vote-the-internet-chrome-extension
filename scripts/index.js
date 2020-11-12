@@ -272,7 +272,7 @@ window.onload = () => {
     let source = document.querySelector('body');
     source.addEventListener('copy', (event) => {
         const selection = document.getSelection();
-        chrome.storage.sync.get('vti_clipboard', data=>{
+        chrome.storage.local.get('vti_clipboard', data=>{
             data = data.vti_clipboard;
             let date = new Date().toDateString();
             if(data != undefined && Object.keys(data).length > 0) //records exist
@@ -284,7 +284,7 @@ window.onload = () => {
                 data = {};
                 data[selection.toString()] = date;
             }
-            chrome.storage.sync.set({'vti_clipboard': data}, ()=>{
+            chrome.storage.local.set({'vti_clipboard': data}, ()=>{
                 //done
             });
         });
