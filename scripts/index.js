@@ -277,12 +277,12 @@ window.onload = () => {
             let date = new Date().toDateString();
             if(data != undefined && Object.keys(data).length > 0) //records exist
             {
-                data[selection.toString().trim()] = date; //bug fix! fml...
+                data[parseHTML(selection.toString().trim())] = date; //bug fix! fml...
             }
             else
             {   
                 data = {};
-                data[parseHTML(selection.toString())] = date;
+                data[selection.toString()] = date;
             }
             chrome.storage.local.set({'vti_clipboard': data}, ()=>{
                 //done
@@ -291,3 +291,27 @@ window.onload = () => {
         // event.preventDefault();
     });
 };
+
+// Parsing HTML
+function parseHTML(htmlCode) {
+    htmlCode = htmlCode.replace (/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "");
+    //Title and list bullets
+    htmlCode = htmlCode.replace (/<title>/gi, "<title>META TAG (title): ");
+    htmlCode = htmlCode.replace (/<link/gi, "<llink");
+    htmlCode = htmlCode.replace (/<\/li><li>/gi, "</li>\n<li>");
+    htmlCode = htmlCode.replace (/<li/gi, "\nâ€¢ <li");
+    htmlCode = htmlCode.replace (/<llink/gi, "<link");
+    htmlCode = htmlCode.replace (/<\/li>\n/gi, "</li>");
+    
+    //line break shenanigans
+    htmlCode = htmlCode.replace(/(\n\r|\n|\r)/gm,"\n");
+    htmlCode = htmlCode.replace(/(\n \n)/gm,"\n\n");
+    htmlCode = htmlCode.replace(/(\n	\n)/gm,"\n\n");
+    htmlCode = htmlCode.replace(/(\n\n\n\n\n\n\n)/gm,"\n\n");
+    htmlCode = htmlCode.replace(/(\n\n\n\n\n\n)/gm,"\n\n");
+    htmlCode = htmlCode.replace(/(\n\n\n\n\n)/gm,"\n\n");
+    htmlCode = htmlCode.replace(/(\n\n\n\n)/gm,"\n\n");
+    htmlCode = htmlCode.replace(/(\n\n\n)/gm,"\n\n");
+    htmlCode = htmlCode.trim();
+    return htmlCode;
+}
