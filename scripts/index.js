@@ -277,12 +277,12 @@ window.onload = () => {
             let date = new Date().toDateString();
             if(data != undefined && Object.keys(data).length > 0) //records exist
             {
-                data[selection.toString()] = date;
+                data[selection.toString().trim()] = date; //bug fix! fml...
             }
             else
             {   
                 data = {};
-                data[selection.toString()] = date;
+                data[parseHTML(selection.toString())] = date;
             }
             chrome.storage.local.set({'vti_clipboard': data}, ()=>{
                 //done
@@ -291,4 +291,3 @@ window.onload = () => {
         // event.preventDefault();
     });
 };
-

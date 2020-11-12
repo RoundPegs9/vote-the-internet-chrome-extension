@@ -5,6 +5,7 @@ $("ul").on("click", "li", function(){
 	$($text).attr('title', 'Copied to clipboard!');
 });
 
+// Deleting.
 $("ul").on("click", "span", function(event){
     if($(this).attr('class') == 'delete')
     {
@@ -27,6 +28,7 @@ $("ul").on("click", "span", function(event){
 
 $("input[type='text']").keypress(function(event){
 	if(event.which === 13){
+        console.log("IN HERE", $(this).val());
         var $newItem = $(this).val();
 		if ($newItem.length > 3) {
             $(this).val("");
