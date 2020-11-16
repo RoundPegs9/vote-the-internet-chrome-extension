@@ -26,6 +26,17 @@ $("ul").on("click", "span", function(event){
     }
 });
 
+// Delete all -danger
+$("#sudo").on("click",  (event)=>{
+    chrome.storage.local.clear(function () {
+        var error = chrome.runtime.lastError;
+        if (error) {
+            console.error(error);
+        }
+        location.reload();
+    });
+});
+
 $("input[type='text']").keypress(function(event){
 	if(event.which === 13){
         console.log("IN HERE", $(this).val());
