@@ -20,7 +20,17 @@ h1 {
 	font-weight: normal;
 }
 
-.fa-plus {
+#sudo /* Delete button */
+{
+	color: #e74c3c;
+}
+.control:hover
+{
+	cursor: pointer;
+}
+
+.control {
+	padding-left: 30px;
 	float: right;
 }
 
